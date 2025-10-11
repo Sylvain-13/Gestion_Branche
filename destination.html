@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Découvrez nos destinations</title>
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+<body>
+    <div class="container">
+        <img id="cityImage" class="image-header" src="" alt="Image de la ville">
+        <div class="content">
+            <h1 id="cityName">Chargement...</h1>
+            <p id="cityDescription" class="description"></p>
+            <button class="contact-btn" onclick="contact()">Contactez-nous</button>
+        </div>
+    </div>
+
+    <script>
+        // Données des villes
+        const villes = {
+            paris: {
+                nom: "Paris",
+                image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1200",
+                description: "Paris, la Ville Lumière, est reconnue mondialement pour sa beauté architecturale, ses musées prestigieux et son art de vivre unique. De la majestueuse Tour Eiffel au charmant Montmartre, en passant par les Champs-Élysées et le Louvre, chaque quartier révèle une richesse culturelle incomparable. Flânez le long de la Seine, savourez un café en terrasse et laissez-vous séduire par l'élégance parisienne. Une destination incontournable pour les amoureux de culture, d'histoire et de gastronomie."
+            },
+            lyon: {
+                nom: "Lyon",
+                image: "https://images.unsplash.com/photo-1524396309943-e03f5249f002?w=1200",
+                description: "Lyon, capitale de la gastronomie française, allie patrimoine historique et modernité avec brio. Son Vieux Lyon Renaissance, classé au patrimoine mondial de l'UNESCO, ses traboules mystérieuses et sa Presqu'île animée offrent une expérience unique. Découvrez ses célèbres bouchons, dégustez une authentique cuisine lyonnaise et admirez la vue panoramique depuis la Basilique de Fourvière. Entre Rhône et Saône, Lyon vous invite à un voyage culinaire et culturel inoubliable."
+            },
+            marseille: {
+                nom: "Marseille",
+                image: "https://images.unsplash.com/photo-1590050144042-03345a99ee4d?w=1200",
+                description: "Marseille, porte de la Méditerranée, vous séduit par son authenticité et son caractère cosmopolite. Son Vieux-Port pittoresque, la majestueuse Basilique Notre-Dame de la Garde et les calanques spectaculaires font de cette cité phocéenne une destination de rêve. Profitez du soleil provençal, dégustez une bouillabaisse traditionnelle et explorez les quartiers vibrants du Panier. Marseille, c'est 2600 ans d'histoire et une atmosphère méditerranéenne incomparable."
+            },
+            nice: {
+                nom: "Nice",
+                image: "https://images.unsplash.com/photo-1570633303337-bc5504e80f6d?w=1200",
+                description: "Nice, perle de la Côte d'Azur, enchante par son climat exceptionnel et sa Promenade des Anglais légendaire. Entre mer turquoise et montagnes, la ville offre un cadre idyllique avec son Vieux-Nice aux ruelles colorées, ses marchés provençaux et ses musées d'art remarquables. Savourez la socca locale, admirez les façades Belle Époque et profitez de la douceur de vivre méditerranéenne. Nice est une invitation au farniente et à la découverte culturelle."
+            }
+        };
+
+        // Récupérer le paramètre 'ville' de l'URL
+        function getVilleFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('ville');
+        }
+
+        // Afficher la ville
+        function afficherVille() {
+            const villeParam = getVilleFromURL();
+            
+            if (!villeParam) {
+                document.querySelector('.content').innerHTML = 
+                    '<div class="error"><h1>Aucune ville spécifiée</h1><p>Veuillez ajouter ?ville=paris (ou lyon, marseille, nice) à l\'URL</p></div>';
+                document.getElementById('cityImage').style.display = 'none';
+                return;
+            }
+
+            const ville = villes[villeParam.toLowerCase()];
+
+            if (!ville) {
+                document.querySelector('.content').innerHTML = 
+                    '<div class="error"><h1>Ville non trouvée</h1><p>Villes disponibles : paris, lyon, marseille, nice</p></div>';
+                document.getElementById('cityImage').style.display = 'none';
+                return;
+            }
+
+            document.getElementById('cityName').textContent = ville.nom;
+            document.getElementById('cityDescription').textContent = ville.description;
+            document.getElementById('cityImage').src = ville.image;
+            document.getElementById('cityImage').alt = `Vue de ${ville.nom}`;
+        }
+
+        // Fonction de contact
+        function contact() {
+            const villeParam = getVilleFromURL();
+            const ville = villes[villeParam?.toLowerCase()];
+            alert(`Merci de votre intérêt pour ${ville?.nom || 'notre destination'} ! Un conseiller vous contactera bientôt.`);
+        }
+
+        // Initialisation
+        afficherVille();
+    </script>
+</body>
+</html>
